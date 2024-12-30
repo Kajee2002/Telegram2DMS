@@ -7,23 +7,30 @@ import json
 def shareFile(FileName, LoginDetail):
     SharePoint = Configs.SharePoint
     Header = Configs.Header
-    permissionBody = f'path={FileName}&shareType=3&permissions=1'  # Directly construct permission body
+    permissionBody = f'path={FileName}&shareType=3&permissions=1'  # Correct string formatting
 
     try:
-        # Perform the POST request using requests
+        # Send the POST request using requests
         response = requests.post(SharePoint, data=permissionBody, headers=Header, auth=(LoginDetail[0], LoginDetail[1]))
-
+        
         # Check if the request was successful
         if response.status_code == 200:
-            json_response = response.json()  # Parse the JSON response
-            share = json_response['ocs']['data']  # Extract the share data
+            try:
+                # Try parsing the response as JSON
+                json_response = response.json()  # This should return a dictionary
+                print(json_response)  # Print for debugging
 
-            # Return the share URL if available
-            return share.get("url", None)  # Safely return the URL or None
+                # Check if 'ocs' and 'data' exist in the response and safely access the URL
+                share = json_response.get('ocs', {}).get('data', {})
+                
+                # Return the share URL if available
+                return share.get("url", None)
+            except json.JSONDecodeError:
+                print(f"Error: Failed to parse JSON response. Raw response: {response.text}")
+                return None
         else:
-            log(f"Error: Unable to share the file. Status code {response.status_code}")
+            print(f"Error: Unable to share the file. Status code {response.status_code}")
             return None
     except requests.exceptions.RequestException as e:
-        # Handle any request exceptions
-        log(f"Request failed: {e}")
+        print(f"Request failed: {e}")
         return None
