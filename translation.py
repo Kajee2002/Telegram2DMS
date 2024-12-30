@@ -14,6 +14,7 @@ class Translation(object):
     BATCH_DONE = "🎉 All files uploaded successfully!"
     BATCH_CLOSE = "❌ Batch upload has been cancelled."
     BATCH_EMPTY = "📦 No files to upload. Please send files first!"
+    BATCH_DONE= "🎉{n} files uploaded successfully! \n\n <b>Links: {urls} <b>"
     DOWNLOAD = "🔍 File found and ready to download!"
     UPLOAD_ERROR = "❌ Oops! Something went wrong while uploading the file."
     LOGIN_CALL = "<b>🔐 Please enter your DMS login credentials in this format:</b> \n<code>USERNAME PASSWORD</code>"
@@ -23,7 +24,7 @@ class Translation(object):
     LOGIN_FINISH = "🏠 You are now logged in to your DMS account."
     LOGIN_FIRST = "🔐 Please log in before uploading your files."
     QUOTA_EXCEEDED = "⚠ DMS free quota limit reached. \nPlease delete some files and try again!"
-
+    SHARE_FILE='🔗 File Downloaded successfully! \n \n <b>Link: {link} <b>'
 
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 

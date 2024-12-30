@@ -61,8 +61,10 @@ async def Download(client,message,sent_message):
             log(e)
 
         try:
-            result = await shareFile(client,file_name)
-            return result if result!=False else None
+            result = await shareFile(file_name,LoginDetail,sent_message)
+            await sent_message.edit_text(Translation.SHARE_FILE.format(result))
+            return result if result else None
+
         except Exception as e:
             log(e)
 
@@ -75,7 +77,15 @@ async def BatchDownload(client,message):
 async def DownloadToServer(client,user):
     files=GetBatchFile(user)
     #print(files)
+    client.custon_data['BatchUrls']=[]
+    count=0
     for i in files:
         result=await Download(client,i[0],i[1])
-        if result==True:    
+        if result==True:
             break
+        elif result:
+            count+=1
+            client.custom_data['BatchUrls'].append(result)
+    urls=client.custom_data.get('BatchUrls')
+    try:await client.send_message(user,Translation.BATCH_DONE.format(count,urls))
+    except:log(f'Batch Done {urls}')
