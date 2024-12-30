@@ -60,8 +60,9 @@ async def Download(client,message,sent_message):
         except Exception as e:
             log(e)
 
+        #Get file Url from DMS
         try:
-            result = await shareFile(file_name,LoginDetail,sent_message)
+            result = await shareFile(file_name,LoginDetail)
             await sent_message.edit_text(Translation.SHARE_FILE.format(result))
             return result if result else None
 
