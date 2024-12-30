@@ -27,8 +27,8 @@ async def Download(client,message,sent_message):
     else:
         try:
             await sent_message.edit_text(Translation.DOWNLOADING)
-            file_name=get_file_name(message)
-            file_name = urllib.parse.quote(file_name)
+            original_file_name=get_file_name(message)
+            file_name = urllib.parse.quote(original_file_name)
             user=message.from_user.id
             download_path=Configs.DOWNLOAD_PATH + "/"+str(user)+'/'+file_name
             log(f'File Name : {file_name} Download Initiated...')
@@ -62,7 +62,7 @@ async def Download(client,message,sent_message):
 
         #Get file Url from DMS
         try:
-            result = await shareFile(file_name,LoginDetail)
+            result = await shareFile(original_file_name,LoginDetail)
             await sent_message.edit_text(Translation.SHARE_FILE.format(result))
             return result if result else None
 
