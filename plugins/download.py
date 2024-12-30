@@ -13,6 +13,7 @@ from plugins.share import shareFile
 async def Download(client,message,sent_message):
     available_dms_storage=client.custom_data.get('quota_available')
     file_size=get_file_size(message)
+    print(f'File Size : {file_size}')
     if not available_dms_storage:
         client.custom_data['downlaod_flag']=True #Set the download flag to download the file after login
         client.custom_data['file_message']=message #Store the message to download after login
