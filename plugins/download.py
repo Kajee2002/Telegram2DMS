@@ -20,7 +20,7 @@ async def Download(client,message,sent_message):
         except FloodWait as e:asyncio.sleep(e)
         return True
     
-    elif available_dms_storage<file_size:
+    elif int(available_dms_storage)<int(file_size):
         try:await sent_message.reply(Translation.QUOTA_EXCEDED)
         except FloodWait as e:asyncio.sleep(e)
         return True

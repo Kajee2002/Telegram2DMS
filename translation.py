@@ -20,6 +20,7 @@ class Translation(object):
     LOGIN_ERROR = "⚠ Incorrect login details. Please try again: \n<code>USERNAME PASSWORD</code>"
     LOGIN_FAILED = "❌ Login failed. Please check your credentials and try again."
     LOGIN_SUCCESS = "🎉 Login successful! You can now upload files."
+    LOGIN_FINISH = "🏠 You are now logged in to your DMS account."
     LOGIN_FIRST = "🔐 Please log in before uploading your files."
     QUOTA_EXCEEDED = "⚠ DMS free quota limit reached. \nPlease delete some files and try again!"
 

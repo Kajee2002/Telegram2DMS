@@ -51,7 +51,7 @@ async def login_register(client,message):
 
         if result and download_flag: #If download flag is set then download the file
             client.custom_data['quota_available']=result #Set the quota available
-            SentMessage=await reply_message.reply(Translation.LOGIN_SUCCESS) #Send the login success message
+            SentMessage=await reply_message.reply(Translation.LOGIN_FINISH) #Send the login success message
             await reply_message.delete() #Delete the login message
             Message=client.custom_data.get('file_message') #Get the message to download the file
             client.custom_data['download_flag']=False #Reset the download flag
@@ -87,7 +87,7 @@ def check_login(LoginDetail):
             return False
         else:
             output = process.stdout.read()
-            
+
         # Log and parse response
         try:
             namespaces = {"d": "DAV:"}  # Define namespace
