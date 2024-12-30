@@ -1,0 +1,32 @@
+{
+    "name": "Telegram 2 Dms BOt",
+    "description": "A Telegram bot to transfer files from Telegram to your Dms cloud",
+    "logo" : "https://telegra.ph/file/05bae0725724007c72fa1.jpg",
+    "success_url" : "https://t.me/Tg2Dms_Bot",
+    "keywords": [
+      "telegram",
+      "bot",
+      "DMS",
+      "Kajatheepan"
+    ],
+    "repository": "https://github.com/Kajee2002/Telegram2DMS",
+    "website": "https://github.com/Kajee2002/Telegram2DMS",
+    "env": {
+      "BOT_TOKEN": {
+        "description": "Your bot Bot Token, get this value from @BotFather.",
+        "value": ""
+      },
+      "API_KEY": {
+        "description": "Your APP API KEY, get this from https://my.telegram.org",
+        "value": ""
+      },
+      "API_HASH": {
+        "description": "Your APP HASH, get this from https://my.telegram.org",
+       "value": ""
+      },
+      "WORKERS": {
+        "description": "Number of threads to use, this depends on usage.  4 is the recommended (and default) amount, but your experience may vary.",
+        "value": "4"
+      }
+    }
+  }
