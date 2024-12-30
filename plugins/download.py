@@ -83,7 +83,7 @@ async def BatchDownload(client,message):
 async def DownloadToServer(client,user):
     files=GetBatchFile(user)
     #print(files)
-    client.custon_data['BatchUrls']=[]
+    client.custom_data['BatchUrls']=[]
     count=0
     for i in files:
         result=await Download(client,i[0],i[1])
