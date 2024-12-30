@@ -27,7 +27,7 @@ async def callback(client,query:CallbackQuery):
             await query.message.edit_text(Translation.LOGIN,reply_markup=InlineKeyboard.LOGIN)
         elif data=='done':
             await DownloadToServer(client,query.from_user.id)
-        elif data=='downlaod':
+        elif data=='download':
             await Download(client,message.reply_to_message,message)
         
     except Exception as e:
