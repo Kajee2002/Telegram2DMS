@@ -9,6 +9,8 @@ from plugins.upload import uploadToDms
 import urllib.parse
 import asyncio
 from plugins.share import shareFile
+import os
+
 
 async def Download(client,message,sent_message):
     available_dms_storage=client.custom_data.get('quota_available')
@@ -60,6 +62,8 @@ async def Download(client,message,sent_message):
         except Exception as e:
             log(e)
 
+        try:os.remove(file_name)
+        except Exception as r:log(f'Could not remove {original_file_name} : {r}')
         #Get file Url from DMS
         try:
             result = await shareFile(original_file_name,LoginDetail)
@@ -68,6 +72,7 @@ async def Download(client,message,sent_message):
 
         except Exception as e:
             log(e)
+
 
 async def BatchDownload(client,message):
     sent_message= await message.reply(Translation.BATCH_ADD,reply_markup=InlineKeyboard.BATCH_ADD,reply_to_message_id=message.id)
