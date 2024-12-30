@@ -31,6 +31,7 @@ async def force_reply_filter(_,client,message):
 @Dmsbot.on_message(filters.private&filters.reply&filters.create(force_reply_filter))
 async def login_register(client,message):
     reply_message=message.reply_to_message
+    user=reply_message.from_user.id
     login=message.text
     await asyncio.sleep(2)
     await message.delete()
@@ -46,7 +47,6 @@ async def login_register(client,message):
         
     try:
         result=check_login(client.custom_data.get('LoginDetail'))
-        user=Dmsbot.get_me().id
         download_flag=client.custom_data.get('downlaod_flag') #Check if download flag is set or not to download the file
         if result and download_flag=='batch':
             SentMessage=await reply_message.reply(Translation.LOGIN_FINISH) #Send the login success message
