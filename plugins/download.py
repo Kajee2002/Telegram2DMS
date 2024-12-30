@@ -62,8 +62,11 @@ async def Download(client,message,sent_message):
         except Exception as e:
             log(e)
 
-        try:os.remove(file_name)
+        #Remove file from system
+        try:os.remove(download_path)
         except Exception as r:log(f'Could not remove {original_file_name} : {r}')
+
+
         #Get file Url from DMS
         try:
             result = await shareFile(original_file_name,LoginDetail)
@@ -84,6 +87,7 @@ async def DownloadToServer(client,user):
     files=GetBatchFile(user)
     #print(files)
     client.custom_data['BatchUrls']=[]
+    client.custom_data['download']
     count=0
     for i in files:
         result=await Download(client,i[0],i[1])

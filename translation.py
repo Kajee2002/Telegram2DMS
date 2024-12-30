@@ -90,3 +90,10 @@ class InlineKeyboard(object):
             ]
         ]
     )
+    BATCH_CANCEL=InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton('❌ cancel',callback_data='cancel_batch')
+            ]
+        ]
+    )

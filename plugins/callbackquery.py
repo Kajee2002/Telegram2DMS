@@ -22,7 +22,10 @@ async def callback(client,query:CallbackQuery):
         elif data== 'batch':
             #SetBatchFlag(query.from_user.id) #Set batch flag in database
             client.custom_data['batch']=True
-            await query.message.edit_text(Translation.BATCH)
+            await query.message.edit_text(Translation.BATCH,reply_markup=InlineKeyboard.BATCH_CANCEL)
+        elif data=='cancel_batch':
+            client.custom_data['batch']=False
+            await message.delete()
         elif data =='login':
             await query.message.edit_text(Translation.LOGIN,reply_markup=InlineKeyboard.LOGIN)
         elif data=='done':
