@@ -1,15 +1,16 @@
 from pyrogram import Client, filters
 from pyrogram.errors import FloodWait 
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-import time,os,json,sys
+from flask import Flask
+import threading
 import asyncio
+import os
 from helper.logprint import log
 
 from configs import Configs
 from translation import InlineKeyboard, Translation
 
-
-#Initialise the bot
+# Initialize the bot
 app = Client(
     "DMSBot",
     api_id=Configs.API_ID,
@@ -19,36 +20,29 @@ app = Client(
     plugins={"root": "plugins"},
     sleep_threshold=15,
     max_concurrent_transmissions=Configs.MAX_CONCURRENT_TRANSMISSIONS,
-
 )
 
-app.custom_data={'batch':False,"last_update_time":None}
+app.custom_data = {'batch': False, "last_update_time": None}
 
+# Flask app for web service
+flask_app = Flask(__name__)
 
-'''#MAIN function
-async def main():
-    async with app:
-        #print("Client started. Listening for messages...")
-        print(f"\033[1;96m @Bot Sᴛᴀʀᴛᴇᴅ......⚡️⚡️⚡️\033[0m")
-        #try:[await app.send_message(id,text='Hi This is userbot') for id in Configs.ADMIN]
-        #except Exception as e:print('sending message error',e)
-        try:
-            await asyncio.Event().wait()  # Keeps the client running
+@flask_app.route('/')
+def health_check():
+    return "Bot is running!"
 
-        except KeyboardInterrupt:
-            print("Client stopped due to keyboard interupt.")
-        except:
-            print(f"\033[1;96m Client stopped.\033[0m")
+# Function to run the bot
+async def run_bot():
+    log('@Bot Sᴛᴀʀᴛᴇᴅ......⚡️⚡️⚡️')
+    await app.start()  # Use asyncio to start the bot
 
-
-# Start the asyncio loop
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except Exception as e:
-        print("An error occured.\n",e)'''
+    # Run the bot in the main thread using asyncio
+    loop = asyncio.get_event_loop()
+    loop.create_task(run_bot())
 
+    # Start the Flask web server in a separate thread
+    threading.Thread(target=lambda: flask_app.run(host="0.0.0.0", port=8080)).start()
 
-# Start the Bot
-log('@Bot Sᴛᴀʀᴛᴇᴅ......⚡️⚡️⚡️')
-app.run()
+    # Run the asyncio event loop
+    loop.run_forever()
