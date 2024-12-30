@@ -16,13 +16,15 @@ async def progress(current,total,*args):
     total=data_convert(total)
     if current_time-last_updated_time>5:
         #log(Translation.PROGRESS.format(prog=prog,total=total,current=current))
-        await message.edit_text(Translation.PROGRESS.format(prog=prog,total=total,current=current))
+        try:await message.edit_text(Translation.PROGRESS.format(prog=prog,total=total,current=current))
+        except Exception as e:log(e)
         client.custom_data['last_updated_time']=current_time
 
 
 #Progress bar for uploading process
 async def uploadProgress(percentage,client,message,total):
     prog=f'{round(percentage,2)}%'
+    print(percentage,end='\r')
     current=total*percentage
     await progress(current,total,message,client)
 
