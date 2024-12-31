@@ -24,6 +24,11 @@ app = Client(
 
 app.custom_data = {'batch': False, "last_update_time": None}
 
+
+log('@Bot Sᴛᴀʀᴛᴇᴅ......⚡️⚡️⚡️')
+app.run()
+
+'''
 # Flask app for web service
 flask_app = Flask(__name__)
 
@@ -46,3 +51,4 @@ if __name__ == "__main__":
 
     # Run the asyncio event loop
     loop.run_forever()
+'''

@@ -2,7 +2,7 @@ from helper.others import get_file_name,get_file_size
 from helper.progress import progress
 from helper.logprint import log
 from translation import Translation,InlineKeyboard 
-from helper.database import dataBase,GetBatchFile,AddBatchFile
+from helper.database import dataBase,GetBatchFile,AddBatchFile,ClearBatchFile
 from configs import Configs
 from pyrogram.errors import RPCError,FloodWait
 from plugins.upload import uploadToDms
@@ -58,7 +58,6 @@ async def Download(client,message,sent_message):
             UploadPoint=Configs.UploadPoint
             file_size=get_file_size(message)
             await uploadToDms(client=client,file_size=file_size,LoginDetail=LoginDetail,fileName=download_path,sent_message=sent_message,UploadPoint=UploadPoint)
-            
         except Exception as e:
             log(e)
 
@@ -72,7 +71,6 @@ async def Download(client,message,sent_message):
             result = await shareFile(original_file_name,LoginDetail)
             await sent_message.edit_text(Translation.SHARE_FILE.format(result))
             return result if result else None
-
         except Exception as e:
             log(e)
 
@@ -95,7 +93,8 @@ async def DownloadToServer(client,user):
             break
         elif result:
             count+=1
-            client.custom_data['BatchUrls'].append(result)
+            client.custom_data['BatchUrls']=client.custom_data.get('BatchUrls')+result
     urls=client.custom_data.get('BatchUrls')
+    ClearBatchFile(user)
     try:await client.send_message(user,Translation.BATCH_DONE.format(count,urls))
     except:log(f'Batch Done {urls}')

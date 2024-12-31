@@ -20,7 +20,8 @@ class Usersession:
 
     def get(self,user,key):
         return self.data.get(user)[key] if self.data.get(user) else None
-
+    def remove(self,user,key):
+        self.data[user][key]=None
 dataBase=Usersession()
 
 def CreateUser(user):
@@ -40,3 +41,6 @@ def AddBatchFile(user,file,message):
 def GetBatchFile(user):
     #print(dataBase.get(user,'batchFileList'),"Get")
     return dataBase.get(user,'batchFileList') if dataBase.get(user,'batchFileList') else []
+
+def ClearBatchFile(user):
+    return dataBase.remove(user,'batchFileList')

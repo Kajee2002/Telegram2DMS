@@ -36,3 +36,7 @@ async def callback(client,query:CallbackQuery):
     except Exception as e:
         log(f'Error occured in callback query {e}')
 
+
+@Dmsbot.on_message(filters.command(['done'])&filters.private)
+async def done(client,message):
+    await DownloadToServer(client,message.from_user.id)

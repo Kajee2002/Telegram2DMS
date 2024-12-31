@@ -15,6 +15,7 @@ class Translation(object):
     BATCH_CLOSE = "❌ Batch upload has been cancelled."
     BATCH_EMPTY = "📦 No files to upload. Please send files first!"
     BATCH_DONE= "🎉{n} files uploaded successfully! \n\n <b>Links: {urls} <b>"
+    BATCH_RESEND= "📦 Resend the files you want to upload in a single batch. \n<b>When done, send <code>/done</code> or click the 'Done' button.</b>"
     DOWNLOAD = "🔍 File found and ready to download!"
     UPLOAD_ERROR = "❌ Oops! Something went wrong while uploading the file."
     LOGIN_CALL = "<b>🔐 Please enter your DMS login credentials in this format:</b> \n<code>USERNAME PASSWORD</code>"

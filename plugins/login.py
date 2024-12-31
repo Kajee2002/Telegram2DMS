@@ -49,8 +49,8 @@ async def login_register(client,message):
         result=check_login(client.custom_data.get('LoginDetail'))
         download_flag=client.custom_data.get('downlaod_flag') #Check if download flag is set or not to download the file
         if result and download_flag=='batch':
-            SentMessage=await reply_message.reply(Translation.LOGIN_FINISH) #Send the login success message
-            await DownloadToServer(client,user)
+            SentMessage=await reply_message.reply(Translation.BATCH_RESEND) #Send the login success message
+            #await DownloadToServer(client,user)
         elif result and download_flag: #If download flag is set then download the file
             client.custom_data['quota_available']=result #Set the quota available
             SentMessage=await reply_message.reply(Translation.LOGIN_FINISH) #Send the login success message
