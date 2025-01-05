@@ -11,7 +11,7 @@ import asyncio
 import re
 from plugins.share import shareFile
 import os
-from plugins.zip import zip_huge_files
+#from plugins.zip import zip_huge_files
 
 
 async def Download(client,message,sent_message):
@@ -113,7 +113,8 @@ async def DownloadToServer(client,user):
     zip_flag=client.custom_data.get('zip_flag')
     output_file=client.custom_data.get('zip_name')
     if zip_flag:
-        await zip_huge_files(client,output_file)
+        #await zip_huge_files(client,output_file)
+        pass
     else:
         try:await client.send_message(user,Translation.BATCH_DONE.format(count,urls))
         except:log(f'Batch Done {urls}')
