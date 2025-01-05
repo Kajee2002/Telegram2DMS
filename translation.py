@@ -26,6 +26,16 @@ class Translation(object):
     LOGIN_FIRST = "🔐 Please log in before uploading your files."
     QUOTA_EXCEEDED = "⚠ DMS free quota limit reached. \nPlease delete some files and try again!"
     SHARE_FILE='🔗 File Downloaded successfully! \n \n <b>Link: {link} <b>'
+    ZIP_FILE='📦 Zipping the files...'
+    ZIP_COMMAND="Please provide a directory to zip. In this format <code>/zip <zip file name></code>"
+    ZIP_ERROR='❌ Error occured while zipping the files'
+    ZIP_DONE='🎉 Files zipped successfully! Now uploading to DMS...'
+    ZIP_UPLOAD_ERROR='❌ Error occured while uploading the zipped files'
+    ZIP_UPLOAD_DONE='🎉 Files uploaded successfully to your DMS account!'
+    ZIP_UPLOADING='📤 Uploading your zipped files to DMS..'
+    ZIP_INIT='Now zipping your Files...'
+
+
 
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 

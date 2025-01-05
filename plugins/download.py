@@ -8,8 +8,10 @@ from pyrogram.errors import RPCError,FloodWait
 from plugins.upload import uploadToDms
 import urllib.parse
 import asyncio
+import re
 from plugins.share import shareFile
 import os
+from plugins.zip import zip_huge_files
 
 
 async def Download(client,message,sent_message):
@@ -30,9 +32,16 @@ async def Download(client,message,sent_message):
         try:
             await sent_message.edit_text(Translation.DOWNLOADING)
             original_file_name=get_file_name(message)
-            file_name = urllib.parse.quote(original_file_name)
+            file_name=re.sub(r'[^\w\-.]','',original_file_name)
+            #file_name = urllib.parse.quote(file_name)
             user=message.from_user.id
-            download_path=Configs.DOWNLOAD_PATH + "/"+str(user)+'/'+file_name
+
+            zip_flag=client.custom_data.get('zip_flag')
+            if zip_flag:
+                zip_name=client.custom_data.get('zip_name')
+                download_path=Configs.DOWNLOAD_PATH + '/' + str(user) + '/' + zip_name + '/' + file_name
+            else:
+                download_path=Configs.DOWNLOAD_PATH + "/"+str(user)+'/'+file_name
             log(f'File Name : {file_name} Download Initiated...')
             file_path =await message.download(file_name=download_path,progress=progress,progress_args=(sent_message,client,Translation.DOWNLOADING))
             client.custom_data['file_path']=file_path
@@ -53,26 +62,27 @@ async def Download(client,message,sent_message):
             log(f'Error occured while downloading file. {e}')
         
         #Upload TO DMS CALL
-        try:
-            LoginDetail=client.custom_data.get('LoginDetail')
-            UploadPoint=Configs.UploadPoint
-            file_size=get_file_size(message)
-            await uploadToDms(client=client,file_size=file_size,LoginDetail=LoginDetail,fileName=download_path,sent_message=sent_message,UploadPoint=UploadPoint)
-        except Exception as e:
-            log(e)
+        if not zip_flag:
+            try:
+                LoginDetail=client.custom_data.get('LoginDetail')
+                UploadPoint=Configs.UploadPoint
+                file_size=get_file_size(message)
+                await uploadToDms(client=client,file_size=file_size,LoginDetail=LoginDetail,fileName=download_path,sent_message=sent_message,UploadPoint=UploadPoint)
+            except Exception as e:
+                log(e)
 
-        #Remove file from system
-        try:os.remove(download_path)
-        except Exception as r:log(f'Could not remove {original_file_name} : {r}')
+            #Remove file from system
+            try:os.remove(download_path)
+            except Exception as r:log(f'Could not remove {original_file_name} : {r}')
 
 
-        #Get file Url from DMS
-        try:
-            result = await shareFile(original_file_name,LoginDetail)
-            await sent_message.edit_text(Translation.SHARE_FILE.format(result))
-            return result if result else None
-        except Exception as e:
-            log(e)
+            #Get file Url from DMS
+            try:
+                result = await shareFile(file_name,LoginDetail)
+                await sent_message.reply_text(Translation.SHARE_FILE.format(result))
+                return result if result else None
+            except Exception as e:
+                log(e)
 
 
 async def BatchDownload(client,message):
@@ -86,6 +96,7 @@ async def DownloadToServer(client,user):
     #print(files)
     client.custom_data['BatchUrls']=[]
     client.custom_data['download_flag']='batch'
+    
     count=0
     for i in files:
         result=await Download(client,i[0],i[1])
@@ -93,8 +104,16 @@ async def DownloadToServer(client,user):
             break
         elif result:
             count+=1
-            client.custom_data['BatchUrls']=client.custom_data.get('BatchUrls')+result
+            client.custom_data['BatchUrls']=client.custom_data.get('BatchUrls')+[result]
     urls=client.custom_data.get('BatchUrls')
+
+    #Clear batch files from database
     ClearBatchFile(user)
-    try:await client.send_message(user,Translation.BATCH_DONE.format(count,urls))
-    except:log(f'Batch Done {urls}')
+
+    zip_flag=client.custom_data.get('zip_flag')
+    output_file=client.custom_data.get('zip_name')
+    if zip_flag:
+        await zip_huge_files(client,output_file)
+    else:
+        try:await client.send_message(user,Translation.BATCH_DONE.format(count,urls))
+        except:log(f'Batch Done {urls}')

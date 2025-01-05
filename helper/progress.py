@@ -6,6 +6,7 @@ import time,os
 
 #Progress bar for downloading progress
 async def progress(current,total,*args):
+    print("I'm Here in progress")
     current_time=time.time()
     client=args[1]
     last_updated_time=client.custom_data.get('last_updated_time',current_time)

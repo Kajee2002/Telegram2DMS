@@ -10,7 +10,7 @@ from pyrogram.types import CallbackQuery
 from plugins.upload import uploadToDms
 from configs import Configs
 
-@Dmsbot.on_message(filters.private & filters.document|filters.video|filters.audio)
+@Dmsbot.on_message(filters.private & filters.document|filters.video|filters.audio|filters.photo)
 async def main(client,message):
     log(f'{message_type(message)} recieved')
 
