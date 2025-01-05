@@ -1,5 +1,5 @@
 
-'''
+
 import os
 import zipfile
 #from plugins import 
@@ -75,4 +75,4 @@ async def upload_zip(client,sent_message,download_path,zip_name):
         await client.sent_message(Translation.SHARE_FILE.format(result))
         return result if result else None
     except Exception as e:
-        log(e)'''
+        log(e)
